@@ -1,0 +1,44 @@
+﻿    <div class="relative flex min-h-screen items-center justify-center overflow-hidden bg-surface p-6">
+      <div class="absolute right-[-10%] top-[-10%] h-[45%] w-[45%] rounded-full bg-primary/5 blur-[120px]"></div>
+      <div class="absolute bottom-[-10%] left-[-10%] h-[35%] w-[35%] rounded-full bg-tertiary/5 blur-[100px]"></div>
+
+      <div class="relative z-10 w-full max-w-md">
+        <div class="mb-10 text-center">
+          <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-lg font-black text-primary">EMS</div>
+          <h1 class="font-headline text-3xl font-black uppercase tracking-tight text-on-surface">EMS Command</h1>
+          <p class="mt-2 text-on-surface-variant">Angular Operations & Dispatch Portal</p>
+        </div>
+
+        <div class="panel rounded-3xl p-8">
+          <div class="mb-6 flex items-center gap-3 rounded-2xl bg-primary/5 px-4 py-3">
+            <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white">
+              <svg viewBox="0 0 24 24" class="h-5 w-5 fill-current" aria-hidden="true">
+                <path d="M19 8h-3V5a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3H5a2 2 0 0 0-2 2v5a3 3 0 0 0 3 3h1.1a5 5 0 0 0 9.8 0H18a3 3 0 0 0 3-3v-5a2 2 0 0 0-2-2Zm-9-2h4v2h-4V6Zm2 13a3 3 0 1 1 0-6 3 3 0 0 1 0 6Zm7-4a1 1 0 0 1-1 1h-1.1a5 5 0 0 0-9.8 0H6a1 1 0 0 1-1-1v-5h14v5Z"/>
+              </svg>
+            </span>
+            <div class="text-left">
+              <p class="text-sm font-bold text-on-surface">Field system ready</p>
+              <p class="text-xs text-on-surface-variant">Secure access to dispatch, hospitals, fleet, and incidents.</p>
+            </div>
+          </div>
+          <form (ngSubmit)="login()" class="space-y-6">
+            <div>
+              <label class="ml-1 text-[10px] font-bold uppercase tracking-widest text-outline">Personnel ID / Email</label>
+              <input [(ngModel)]="email" name="email" type="email" required class="mt-2 w-full rounded-xl bg-surface-container-high px-4 py-3 outline-none ring-primary/20 focus:ring-2" placeholder="name@ems-command.gov" />
+            </div>
+            <div>
+              <label class="ml-1 text-[10px] font-bold uppercase tracking-widest text-outline">Access Key</label>
+              <input [(ngModel)]="password" name="password" type="password" required class="mt-2 w-full rounded-xl bg-surface-container-high px-4 py-3 outline-none ring-primary/20 focus:ring-2" placeholder="••••••••" />
+            </div>
+            <button type="submit" class="flex w-full items-center justify-center rounded-2xl bg-primary px-4 py-4 text-sm font-bold text-white shadow-lg shadow-primary/20 transition hover:opacity-90">
+              {{ loading ? 'Authorizing…' : 'Authorize Access' }}
+            </button>
+          </form>
+
+          <div class="mt-8 border-t border-outline-variant/10 pt-6 text-[11px] leading-relaxed text-on-surface-variant">
+            This is a restricted government system. Unauthorized access is prohibited and subject to monitoring.
+          </div>
+        </div>
+      </div>
+    </div>
+  

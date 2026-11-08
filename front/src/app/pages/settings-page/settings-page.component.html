@@ -1,0 +1,78 @@
+﻿    <div class="space-y-8">
+      <div>
+        <h2 class="font-headline text-4xl font-black text-on-surface">System Settings</h2>
+        <p class="mt-2 max-w-2xl text-on-surface-variant">Theme, language, notifications, and operating preferences for the Angular app.</p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-8 lg:grid-cols-12">
+        <aside class="panel h-fit space-y-2 p-4 lg:col-span-3">
+          @for (tab of tabs; track tab) {
+            <button (click)="activeTab = tab" class="w-full rounded-xl px-4 py-3 text-left text-sm font-bold transition" [class.bg-primary]="activeTab === tab" [class.text-white]="activeTab === tab" [class.text-on-surface-variant]="activeTab !== tab">
+              {{ tab }}
+            </button>
+          }
+        </aside>
+
+        <main class="space-y-8 lg:col-span-9">
+          @if (activeTab === 'General') {
+            <section class="panel p-8">
+              <h3 class="font-headline text-xl font-black">Appearance & Interface</h3>
+              <div class="mt-6 grid grid-cols-1 gap-8 md:grid-cols-2">
+                <div>
+                  <p class="text-[10px] font-bold uppercase tracking-widest text-outline">Theme</p>
+                  <div class="mt-4 grid grid-cols-3 gap-3">
+                    @for (theme of themes; track theme) {
+                      <button (click)="settings.setTheme(theme)" class="rounded-xl border-2 px-4 py-4 text-xs font-bold uppercase tracking-widest" [ngClass]="settings.theme() === theme ? 'border-primary bg-primary/5 text-primary' : 'border-outline-variant/20'">
+                        {{ theme }}
+                      </button>
+                    }
+                  </div>
+                </div>
+                <div>
+                  <p class="text-[10px] font-bold uppercase tracking-widest text-outline">Language</p>
+                  <select [ngModel]="settings.language()" (ngModelChange)="settings.setLanguage($event)" class="mt-4 w-full rounded-xl bg-surface-container-high px-4 py-3">
+                    @for (language of languages; track language.value) {
+                      <option [ngValue]="language.value">{{ language.label }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+            </section>
+          }
+
+          @if (activeTab === 'Notifications') {
+            <section class="panel p-8">
+              <h3 class="font-headline text-xl font-black">Audio Alerts</h3>
+              <div class="mt-6 space-y-6">
+                <div class="flex items-center justify-between rounded-xl bg-surface p-4">
+                  <div>
+                    <p class="font-semibold text-on-surface">Enable Audio Notifications</p>
+                    <p class="text-sm text-on-surface-variant">Play alert sounds for realtime websocket events.</p>
+                  </div>
+                  <input type="checkbox" [checked]="settings.audioEnabled()" (change)="settings.setAudioEnabled($any($event.target).checked)" />
+                </div>
+                <div class="rounded-xl bg-surface p-4">
+                  <div class="flex items-center justify-between gap-4">
+                    <div>
+                      <p class="font-semibold text-on-surface">Alert Volume</p>
+                      <p class="text-sm text-on-surface-variant">Current volume: {{ settings.audioVolume() }}</p>
+                    </div>
+                    <input type="range" min="0" max="1" step="0.1" [ngModel]="settings.audioVolume()" (ngModelChange)="settings.setAudioVolume($event)" class="w-64" />
+                  </div>
+                </div>
+              </div>
+            </section>
+          }
+
+          @if (activeTab === 'Operations') {
+            <section class="panel p-8 space-y-4">
+              <h3 class="font-headline text-xl font-black">Operational Parameters</h3>
+              <div class="rounded-xl bg-surface p-4">Realtime Dispatch Sync: {{ settings.realtimeSync() ? 'Enabled' : 'Disabled' }}</div>
+              <div class="rounded-xl bg-surface p-4">Predictive Analytics: {{ settings.predictiveAnalytics() ? 'Enabled' : 'Disabled' }}</div>
+              <div class="rounded-xl bg-surface p-4">Clinical Audit Logging: {{ settings.auditLogging() ? 'Enabled' : 'Disabled' }}</div>
+            </section>
+          }
+        </main>
+      </div>
+    </div>
+  

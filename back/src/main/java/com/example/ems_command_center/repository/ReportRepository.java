@@ -1,0 +1,9 @@
+package com.example.ems_command_center.repository;
+
+import com.example.ems_command_center.model.Report;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ReportRepository extends MongoRepository<Report, String> {
+}

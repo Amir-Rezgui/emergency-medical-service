@@ -1,0 +1,173 @@
+﻿    @if (loading) {
+      <div class="flex h-[60vh] items-center justify-center text-sm font-bold uppercase tracking-widest text-on-surface-variant">Loading dashboard...</div>
+    } @else {
+      <div class="space-y-8">
+        <!-- Header -->
+        <div class="rounded-2xl border border-outline-variant/10 bg-surface-container-low p-8">
+          <h1 class="font-headline text-4xl font-black text-on-surface">Command Center Dashboard</h1>
+          <p class="mt-2 text-on-surface-variant">Real-time EMS operations monitoring and management</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
+          <div class="stat-card">
+            <div class="stat-icon">🚑</div>
+            <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">{{ (statCards()[0].label) }}</p>
+            <p class="mt-3 font-headline text-4xl font-black text-on-surface">{{ (statCards()[0].value) }}</p>
+            <p class="mt-2 text-xs font-semibold text-primary">{{ (statCards()[0].note) }}</p>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">⏱️</div>
+            <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">{{ (statCards()[1].label) }}</p>
+            <p class="mt-3 font-headline text-4xl font-black text-on-surface">{{ (statCards()[1].value) }}</p>
+            <p class="mt-2 text-xs font-semibold text-tertiary">{{ (statCards()[1].note) }}</p>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">🏥</div>
+            <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">{{ (statCards()[2].label) }}</p>
+            <p class="mt-3 font-headline text-4xl font-black text-on-surface">{{ (statCards()[2].value) }}</p>
+            <p class="mt-2 text-xs font-semibold text-primary">{{ (statCards()[2].note) }}</p>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">🚨</div>
+            <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">{{ (statCards()[3].label) }}</p>
+            <p class="mt-3 font-headline text-4xl font-black text-on-surface">{{ (statCards()[3].value) }}</p>
+            <p class="mt-2 text-xs font-semibold text-tertiary">{{ (statCards()[3].note) }}</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <section class="panel p-6">
+            <div class="flex items-center justify-between gap-4">
+              <div>
+                <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">🔴 Hospital Manager Feed</p>
+                <h2 class="mt-2 font-headline text-2xl font-black text-on-surface">Latest Incident</h2>
+              </div>
+              <span class="badge" [ngClass]="realtime.connected() ? 'bg-primary/10 text-primary' : 'bg-tertiary/10 text-tertiary'">
+                {{ realtime.connected() ? '● Live' : '⚠ Reconnecting' }}
+              </span>
+            </div>
+            @if (incidents.length > 0 || realtime.latestHospitalIncident(); as latestIncident) {
+              <div class="mt-4 rounded-2xl border border-outline-variant/20 bg-surface p-4">
+                <div class="flex items-start justify-between gap-3">
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <span class="text-xl">🚨</span>
+                      <p class="text-sm font-black text-on-surface">{{ (realtime.latestHospitalIncident()?.incident || incidents[0])?.title }}</p>
+                    </div>
+                    <p class="mt-1 text-xs text-on-surface-variant">{{ realtime.latestHospitalIncident()?.action || 'Latest' }} • 📍 {{ (realtime.latestHospitalIncident()?.incident || incidents[0])?.location }}</p>
+                  </div>
+                  <span class="badge" [ngClass]="(realtime.latestHospitalIncident()?.incident || incidents[0])?.type === 'urgent' ? 'bg-tertiary/10 text-tertiary' : 'bg-primary/10 text-primary'">{{ (realtime.latestHospitalIncident()?.incident || incidents[0])?.status }}</span>
+                </div>
+              </div>
+            } @else {
+              <p class="mt-4 text-sm text-on-surface-variant">⏳ No incidents available. Waiting for updates...</p>
+            }
+          </section>
+
+          <section class="panel p-6">
+            <div class="flex items-center justify-between gap-4">
+              <div>
+                <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">🚗 Dispatch Feed</p>
+                <h2 class="mt-2 font-headline text-2xl font-black text-on-surface">Latest Assignment</h2>
+              </div>
+              <span class="badge bg-primary/10 text-primary">👥 Driver + Hospital</span>
+            </div>
+            @if (vehicles.length > 0 || realtime.latestHospitalDispatch(); as latestDispatch) {
+              <div class="mt-4 rounded-2xl border border-outline-variant/20 bg-surface p-4">
+                <div class="flex items-start justify-between gap-3">
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <span class="text-xl">🚑</span>
+                      <p class="text-sm font-black text-on-surface">{{ (realtime.latestHospitalDispatch()?.vehicleName || vehicles[0]?.name) }}</p>
+                    </div>
+                    <p class="mt-1 text-xs text-on-surface-variant">{{ (realtime.latestHospitalDispatch()?.incidentTitle || 'Latest dispatch') }} • ⏰ {{ (realtime.latestHospitalDispatch()?.dispatchedAt || 'Just now') }}</p>
+                  </div>
+                  <span class="badge bg-primary/10 text-primary">{{ (realtime.latestHospitalDispatch()?.vehicleStatus || vehicles[0]?.status) }}</span>
+                </div>
+              </div>
+            } @else {
+              <p class="mt-4 text-sm text-on-surface-variant">⏳ No assignments available. Waiting for updates...</p>
+            }
+          </section>
+        </div>
+
+        <div class="grid grid-cols-12 gap-8">
+          <div class="col-span-12 space-y-8 lg:col-span-8">
+            <section class="panel p-6">
+              <div class="mb-6 flex items-center justify-between">
+                <div>
+                  <h2 class="font-headline text-2xl font-black text-on-surface">📊 Dispatch Volume</h2>
+                  <p class="text-sm text-on-surface-variant">Hourly dispatch activity from the analytics feed.</p>
+                </div>
+                <span class="badge bg-primary/10 text-primary">📡 Realtime</span>
+              </div>
+              <div class="flex h-64 items-end gap-2">
+                @for (point of dispatchData; track point.time) {
+                  <div class="flex flex-1 flex-col items-center gap-2">
+                    <div class="chart-bar w-full rounded-t transition-all duration-300" [style.height.px]="(point.volume / (maxDispatch || 1)) * 240 + 8"></div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-outline">{{ point.time }}</span>
+                  </div>
+                }
+              </div>
+            </section>
+
+            <section class="panel p-6">
+              <div class="mb-6 flex items-center justify-between">
+                <div>
+                  <h2 class="font-headline text-2xl font-black text-on-surface">🚑 Fleet Snapshot</h2>
+                  <p class="text-sm text-on-surface-variant">Latest positions and crew assignments from the vehicle API.</p>
+                </div>
+                <a routerLink="/ambulances" class="text-sm font-bold text-primary">Manage fleet →</a>
+              </div>
+              <div class="space-y-3">
+                @for (vehicle of vehicles.slice(0, 5); track vehicle.id) {
+                  <div class="vehicle-card rounded-xl border border-outline-variant/10 bg-surface p-4">
+                    <div class="flex items-start justify-between gap-4">
+                      <div>
+                        <div class="flex items-center gap-2">
+                          <span class="text-lg">🚑</span>
+                          <p class="text-sm font-bold text-on-surface">{{ vehicle.name }}</p>
+                        </div>
+                        <p class="text-xs text-on-surface-variant">📍 {{vehicle.location.lat | number:'1.2-2'}}, {{ vehicle.location.lng | number:'1.2-2' }} • {{ vehicle.type }}</p>
+                      </div>
+                      <span class="badge" [ngClass]="vehicle.status === 'available' ? 'bg-primary/10 text-primary' : 'bg-tertiary/10 text-tertiary'">{{ vehicle.status }}</span>
+                    </div>
+                    <p class="mt-2 text-xs text-on-surface-variant">👥 Crew: {{ vehicle.crew.length ? vehicle.crew.join(', ') : '⚠ Unassigned' }}</p>
+                  </div>
+                }
+              </div>
+            </section>
+          </div>
+
+          <div class="col-span-12 space-y-8 lg:col-span-4">
+            <section class="panel p-6">
+              <div class="mb-4 flex items-center justify-between">
+                <h2 class="font-headline text-xl font-black">🏥 Facilities</h2>
+                <a routerLink="/hospitals" class="text-sm font-bold text-primary">View all →</a>
+              </div>
+              <div class="space-y-3">
+                @for (facility of facilities.slice(0, 4); track facility.id) {
+                  <div class="facility-card rounded-xl border border-outline-variant/10 bg-surface p-4">
+                    <div class="flex items-start justify-between gap-4">
+                      <div>
+                        <div class="flex items-center gap-2">
+                          <span class="text-lg">🏢</span>
+                          <p class="text-sm font-bold text-on-surface">{{ facility.name }}</p>
+                        </div>
+                        <p class="mt-1 text-xs text-on-surface-variant">🛏️ {{ facility.beds }} beds • 📏 {{ facility.distance }}</p>
+                      </div>
+                      <span class="badge" [ngClass]="facility.type === 'success' ? 'bg-primary/10 text-primary' : facility.type === 'warning' ? 'bg-tertiary/10 text-tertiary' : 'bg-tertiary/10 text-tertiary'">{{ facility.status }}</span>
+                    </div>
+                  </div>
+                }
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    }
+  

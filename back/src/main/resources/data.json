@@ -1,0 +1,201 @@
+{
+  "incidents": [
+    {
+      "title": "MVA - Multi Vehicle Collision",
+      "location": "Avenue Habib Bourguiba, Tunis",
+      "coordinates": { "lat": 36.8065, "lng": 10.1815 },
+      "time": "4m ago",
+      "type": "urgent",
+      "tags": ["AMB-104 En Route", "PD Notified"],
+      "status": "Active",
+      "priority": 1
+    },
+    {
+      "title": "Cardiac Distress",
+      "location": "Rue de Marseille, Tunis",
+      "coordinates": { "lat": 36.8165, "lng": 10.1915 },
+      "time": "12m ago",
+      "type": "normal",
+      "tags": ["Patient Onboard"],
+      "status": "Transporting",
+      "priority": 2
+    }
+  ],
+  "facilities": [
+    {
+      "name": "Charles Nicolle Hospital",
+      "status": "CRITICAL (96%)",
+      "beds": "04",
+      "distance": "2.4",
+      "type": "error",
+      "occupancy": 96,
+      "coordinates": { "lat": 36.7965, "lng": 10.1715 }
+    },
+    {
+      "name": "Military Hospital of Tunis",
+      "status": "STABLE (64%)",
+      "beds": "42",
+      "distance": "5.1",
+      "type": "success",
+      "occupancy": 64,
+      "coordinates": { "lat": 36.8265, "lng": 10.2015 }
+    },
+    {
+      "name": "Rabta Hospital",
+      "status": "BUSY (81%)",
+      "beds": "12",
+      "distance": "3.8",
+      "type": "warning",
+      "occupancy": 81,
+      "coordinates": { "lat": 36.7865, "lng": 10.1615 }
+    }
+  ],
+  "hospitals": [
+    {
+      "name": "St. Jude Medical Center",
+      "facilityType": "Level 1 Trauma",
+      "waitTime": "14 min",
+      "icu": 84,
+      "icuTotal": 100,
+      "beds": "12",
+      "occupancy": 84,
+      "type": "error",
+      "waitType": "error",
+      "status": "CRITICAL (84%)",
+      "equipment": [
+        { "id": "EQ-001", "name": "Ventilator", "status": "functional", "lastChecked": "2023-10-20", "quantity": 15 },
+        { "id": "EQ-002", "name": "MRI Scanner", "status": "functional", "lastChecked": "2023-10-15", "quantity": 2 },
+        { "id": "EQ-003", "name": "Defibrillator", "status": "needs-maintenance", "lastChecked": "2023-09-10", "quantity": 8 }
+      ]
+    },
+    {
+      "name": "Central City General",
+      "facilityType": "Specialist Hub",
+      "waitTime": "42 min",
+      "icu": 52,
+      "icuTotal": 120,
+      "beds": "38",
+      "occupancy": 43,
+      "type": "success",
+      "waitType": "primary",
+      "status": "STABLE (43%)",
+      "equipment": [
+        { "id": "EQ-004", "name": "X-Ray Machine", "status": "functional", "lastChecked": "2023-10-18", "quantity": 4 },
+        { "id": "EQ-005", "name": "ECG Monitor", "status": "functional", "lastChecked": "2023-10-22", "quantity": 20 }
+      ]
+    },
+    {
+      "name": "Northside Memorial",
+      "facilityType": "Level 2 Trauma",
+      "waitTime": "28 min",
+      "icu": 91,
+      "icuTotal": 110,
+      "beds": "6",
+      "occupancy": 83,
+      "type": "warning",
+      "waitType": "primary",
+      "status": "BUSY (83%)",
+      "equipment": [
+        { "id": "EQ-006", "name": "CT Scanner", "status": "out-of-service", "lastChecked": "2023-10-05", "quantity": 1 }
+      ]
+    }
+  ],
+  "vehicles": [
+    {
+      "id": "UNIT-704",
+      "name": "AMB-104",
+      "type": "ambulance",
+      "status": "busy",
+      "location": { "lat": 36.8065, "lng": 10.1815 },
+      "crew": ["M. Ben Ali", "S. Trabelsi"],
+      "lastUpdate": "2m ago",
+      "equipment": [
+        { "id": "VEQ-001", "name": "Portable Ventilator", "status": "functional", "lastChecked": "2023-10-24", "quantity": 1 },
+        { "id": "VEQ-002", "name": "Stretcher", "status": "functional", "lastChecked": "2023-10-24", "quantity": 1 },
+        { "id": "VEQ-003", "name": "Oxygen Tank", "status": "functional", "lastChecked": "2023-10-24", "quantity": 2 }
+      ]
+    },
+    {
+      "id": "UNIT-912",
+      "name": "AMB-202",
+      "type": "ambulance",
+      "status": "available",
+      "location": { "lat": 36.8165, "lng": 10.1715 },
+      "crew": ["A. Mansour"],
+      "lastUpdate": "5m ago",
+      "equipment": [
+        { "id": "VEQ-004", "name": "Defibrillator", "status": "functional", "lastChecked": "2023-10-23", "quantity": 1 }
+      ]
+    },
+    {
+      "id": "UNIT-402",
+      "name": "SUP-01",
+      "type": "supervisor",
+      "status": "busy",
+      "location": { "lat": 36.7965, "lng": 10.1915 },
+      "crew": ["B. Gammarth"],
+      "lastUpdate": "10m ago",
+      "equipment": [
+        { "id": "VEQ-005", "name": "Radio Comms", "status": "functional", "lastChecked": "2023-10-20", "quantity": 2 }
+      ]
+    }
+  ],
+  "reports": [
+    { "name": "Monthly_Response_Audit_Oct.pdf", "category": "Operational Analytics", "date": "Oct 31, 2023", "status": "Ready" },
+    { "name": "Critical_Incident_Review_Q3.xlsx", "category": "Clinical Review", "date": "Oct 28, 2023", "status": "Ready" },
+    { "name": "Fleet_Maintenance_Log_2023.pdf", "category": "Resources", "date": "Oct 25, 2023", "status": "Archived" }
+  ],
+  "personnel": [
+    { "id": "EMS-44291", "name": "Dr. Sarah Chen", "email": "sarah.chen@ems-ops.com", "role": "Administrator", "status": "Active Now", "statusType": "success", "iconName": "ShieldCheck", "color": "bg-primary-container text-white" },
+    { "id": "EMS-99102", "name": "Marcus Thorne", "email": "m.thorne@ems-ops.com", "role": "Dispatcher", "status": "Active Now", "statusType": "success", "iconName": "Headphones", "color": "bg-surface-container-highest text-on-surface" },
+    { "id": "EMS-88273", "name": "James Wilson", "email": "j.wilson@ems-ops.com", "role": "Driver / EMT", "status": "Off Duty", "statusType": "normal", "iconName": "Ambulance", "color": "bg-surface-container text-on-surface-variant" },
+    { "id": "EMS-22104", "name": "Elena Rodriguez", "email": "e.rod@ems-ops.com", "role": "Lead Paramedic", "status": "Emergency Call", "statusType": "urgent", "iconName": "FileText", "color": "bg-tertiary-container text-white" }
+  ],
+  "users": [
+    {
+      "id": "EMS-9421-CMO",
+      "name": "Dr. Sarah Jenkins",
+      "role": "Chief Medical Officer",
+      "email": "s.jenkins@ems-command.gov",
+      "phone": "+1 (555) 942-1084",
+      "location": "Central Command Hub, Sector 4",
+      "joined": "Jan 2018",
+      "specialization": "Emergency Trauma & Critical Care",
+      "stats": [
+        { "label": "Incidents Managed", "value": "1,284", "iconName": "Activity", "color": "text-primary" },
+        { "label": "Avg. Response Time", "value": "06:12", "iconName": "Clock", "color": "text-tertiary" },
+        { "label": "Reports Approved", "value": "482", "iconName": "FileText", "color": "text-secondary" }
+      ]
+    }
+  ],
+  "analytics": [
+    {
+      "type": "dispatch_volume",
+      "data": [
+        { "time": "08:00", "volume": 12 },
+        { "time": "09:00", "volume": 18 },
+        { "time": "10:00", "volume": 22 },
+        { "time": "11:00", "volume": 15 },
+        { "time": "12:00", "volume": 30 },
+        { "time": "13:00", "volume": 25 },
+        { "time": "14:00", "volume": 20 },
+        { "time": "15:00", "volume": 28 },
+        { "time": "16:00", "volume": 18 },
+        { "time": "17:00", "volume": 24 },
+        { "time": "18:00", "volume": 20 }
+      ]
+    },
+    {
+      "type": "response_time",
+      "data": [
+        { "day": "Mon", "arrival": 150, "dispatch": 120 },
+        { "day": "Tue", "arrival": 140, "dispatch": 110 },
+        { "day": "Wed", "arrival": 100, "dispatch": 90 },
+        { "day": "Thu", "arrival": 120, "dispatch": 100 },
+        { "day": "Fri", "arrival": 110, "dispatch": 95 },
+        { "day": "Sat", "arrival": 60, "dispatch": 50 },
+        { "day": "Sun", "arrival": 80, "dispatch": 70 }
+      ]
+    }
+  ]
+}

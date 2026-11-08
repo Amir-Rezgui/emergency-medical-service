@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: ems-command-center
+
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/ems_db}
+      database: ems_db
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${KEYCLOAK_JWK_SET_URI:http://localhost:8080/realms/ems-command-center/protocol/openid-connect/certs}
+
+server:
+  port: ${SERVER_PORT:8081}
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+
+logging:
+  level:
+    com.example.ems_command_center: DEBUG
+    org.springframework.data.mongodb: INFO
+
+app:
+  security:
+    keycloak:
+      client-id: ${KEYCLOAK_CLIENT_ID:ems-command-center-backend}
+      principal-claim: ${KEYCLOAK_PRINCIPAL_CLAIM:preferred_username}

@@ -1,0 +1,55 @@
+﻿    @if (loading || !profile) {
+      <div class="flex h-[60vh] items-center justify-center text-sm font-bold uppercase tracking-widest text-on-surface-variant">Loading profile...</div>
+    } @else {
+      <div class="space-y-8">
+        <header class="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <div class="flex items-center gap-6">
+            <div class="flex h-28 w-28 items-center justify-center rounded-3xl bg-primary text-3xl font-black text-white">{{ initials(profile.name) }}</div>
+            <div>
+              <h2 class="font-headline text-4xl font-black text-on-surface">{{ profile.name }}</h2>
+              <p class="mt-2 text-xl font-semibold text-on-surface-variant">{{ profile.role }}</p>
+              <div class="mt-3 flex flex-wrap gap-3 text-xs font-bold uppercase tracking-wider text-outline">
+                <span>{{ profile.id }}</span>
+                <span>Joined {{ profile.joined }}</span>
+              </div>
+            </div>
+          </div>
+          <a routerLink="/settings" class="rounded-xl bg-surface-container-high px-5 py-3 text-sm font-bold text-on-surface">Settings</a>
+        </header>
+
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-12">
+          <div class="space-y-8 lg:col-span-8">
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+              @for (stat of profile.stats; track stat.label) {
+                <div class="panel p-6">
+                  <p class="text-3xl font-black text-on-surface">{{ stat.value }}</p>
+                  <p class="mt-2 text-[10px] font-bold uppercase tracking-widest text-outline">{{ stat.label }}</p>
+                </div>
+              }
+            </div>
+
+            <section class="panel p-8">
+              <h3 class="font-headline text-xl font-black text-on-surface">Personnel Information</h3>
+              <div class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+                <div><p class="text-[10px] font-bold uppercase tracking-widest text-outline">Official Email</p><p class="mt-2 text-sm font-semibold text-on-surface">{{ profile.email }}</p></div>
+                <div><p class="text-[10px] font-bold uppercase tracking-widest text-outline">Emergency Contact</p><p class="mt-2 text-sm font-semibold text-on-surface">{{ profile.phone }}</p></div>
+                <div><p class="text-[10px] font-bold uppercase tracking-widest text-outline">Primary Station</p><p class="mt-2 text-sm font-semibold text-on-surface">{{ profile.location }}</p></div>
+                <div><p class="text-[10px] font-bold uppercase tracking-widest text-outline">Specialization</p><p class="mt-2 text-sm font-semibold text-on-surface">{{ profile.specialization }}</p></div>
+              </div>
+            </section>
+          </div>
+
+          <div class="space-y-8 lg:col-span-4">
+            <section class="panel p-8">
+              <h3 class="font-headline text-xl font-black">Recent Activity</h3>
+              <div class="mt-6 space-y-4">
+                <div class="rounded-xl bg-surface p-4">Approved dispatch audit</div>
+                <div class="rounded-xl bg-surface p-4">Reviewed hospital capacity update</div>
+                <div class="rounded-xl bg-surface p-4">Signed into angular control center</div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    }
+  

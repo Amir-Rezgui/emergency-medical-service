@@ -1,0 +1,122 @@
+﻿    @if (loading) {
+      <div class="flex h-[60vh] items-center justify-center text-sm font-bold uppercase tracking-widest text-on-surface-variant">Loading hospitals...</div>
+    } @else {
+      <div class="space-y-8">
+        <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h2 class="font-headline text-4xl font-black text-on-surface">Hospital Management</h2>
+            <p class="mt-2 max-w-2xl text-on-surface-variant">Manage facility wait times, ICU occupancy, and equipment from the Angular admin console.</p>
+          </div>
+          <button (click)="openForm()" class="rounded-xl bg-primary px-6 py-3 text-sm font-bold text-white shadow-lg shadow-primary/20">Add Hospital</button>
+        </div>
+
+        <div class="grid grid-cols-1 gap-6 xl:grid-cols-2">
+          <section class="panel p-6">
+            <div class="flex items-center justify-between gap-4">
+              <div>
+                <p class="text-[10px] font-bold uppercase tracking-widest text-primary">Hospital Manager Topic</p>
+                <h3 class="mt-2 font-headline text-2xl font-black text-on-surface">Incident Feed</h3>
+              </div>
+              <span class="badge" [ngClass]="realtime.connected() ? 'bg-primary/10 text-primary' : 'bg-tertiary/10 text-tertiary'">
+                {{ realtime.connected() ? 'Connected' : 'Reconnecting' }}
+              </span>
+            </div>
+            <div class="mt-4 space-y-3">
+              @if (!realtime.hospitalManagerIncidents().length) {
+                <p class="text-sm text-on-surface-variant">New incidents will appear here live from &lt;code&gt;/topic/hospital-manager/incidents&lt;/code&gt;.</p>
+              }
+              @for (event of realtime.hospitalManagerIncidents().slice(0, 5); track event.incidentId + event.action) {
+                <div class="rounded-2xl border border-outline-variant/10 bg-surface p-4">
+                  <div class="flex items-start justify-between gap-3">
+                    <div>
+                      <p class="text-sm font-black text-on-surface">{{ event.incident.title }}</p>
+                      <p class="mt-1 text-xs text-on-surface-variant">{{ event.action }} â€¢ {{ event.incident.location }}</p>
+                    </div>
+                    <span class="badge" [ngClass]="event.incident.type === 'urgent' ? 'bg-tertiary/10 text-tertiary' : 'bg-primary/10 text-primary'">{{ event.incident.status }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+          </section>
+
+          <section class="panel p-6">
+            <div class="flex items-center justify-between gap-4">
+              <div>
+                <p class="text-[10px] font-bold uppercase tracking-widest text-primary">Hospital Manager Topic</p>
+                <h3 class="mt-2 font-headline text-2xl font-black text-on-surface">Dispatch Feed</h3>
+              </div>
+              <span class="badge bg-primary/10 text-primary">/topic/hospital-manager/dispatches</span>
+            </div>
+            <div class="mt-4 space-y-3">
+              @if (!realtime.hospitalManagerDispatches().length) {
+                <p class="text-sm text-on-surface-variant">Ambulance dispatches will appear here live for hospital managers.</p>
+              }
+              @for (dispatch of realtime.hospitalManagerDispatches().slice(0, 5); track dispatch.vehicleId + dispatch.dispatchedAt) {
+                <div class="rounded-2xl border border-outline-variant/10 bg-surface p-4">
+                  <div class="flex items-start justify-between gap-3">
+                    <div>
+                      <p class="text-sm font-black text-on-surface">{{ dispatch.vehicleName }}</p>
+                      <p class="mt-1 text-xs text-on-surface-variant">{{ dispatch.incidentTitle }} â€¢ {{ dispatch.dispatcher }}</p>
+                    </div>
+                    <span class="badge bg-tertiary/10 text-tertiary">{{ dispatch.dispatchedAt }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+          </section>
+        </div>
+
+        <input [(ngModel)]="search" placeholder="Search hospitals by name or type..." class="w-full rounded-xl bg-surface-container-lowest px-4 py-4 outline-none ring-primary/20 focus:ring-2" />
+
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
+          @for (hospital of filteredHospitals(); track hospital.id) {
+            <div class="panel p-6">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-[10px] font-bold uppercase tracking-widest text-primary">{{ hospital.type }}</p>
+                  <h3 class="mt-2 text-lg font-black text-on-surface">{{ hospital.name }}</h3>
+                </div>
+                <div class="flex gap-2">
+                  <button (click)="openForm(hospital)" class="rounded-lg bg-surface px-3 py-2 text-xs font-bold text-primary">Edit</button>
+                  <button (click)="remove(hospital.id)" class="rounded-lg bg-tertiary/10 px-3 py-2 text-xs font-bold text-tertiary">Delete</button>
+                </div>
+              </div>
+              <div class="mt-6 grid grid-cols-2 gap-4">
+                <div class="rounded-xl bg-surface p-4">
+                  <p class="text-[10px] font-bold uppercase tracking-widest text-outline">Wait Time</p>
+                  <p class="mt-2 text-xl font-black" [class.text-tertiary]="hospital.waitType === 'error'" [class.text-primary]="hospital.waitType !== 'error'">{{ hospital.waitTime }}</p>
+                </div>
+                <div class="rounded-xl bg-surface p-4">
+                  <p class="text-[10px] font-bold uppercase tracking-widest text-outline">Beds</p>
+                  <p class="mt-2 text-xl font-black text-on-surface">{{ hospital.beds }}</p>
+                </div>
+              </div>
+              <p class="mt-4 text-sm text-on-surface-variant">ICU {{ hospital.icu }}/{{ hospital.icuTotal }}</p>
+            </div>
+          }
+        </div>
+
+        @if (formOpen) {
+          <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 p-4 backdrop-blur-sm">
+            <div class="w-full max-w-2xl rounded-3xl bg-surface-container-lowest p-8 shadow-2xl">
+              <div class="mb-6 flex items-center justify-between">
+                <h3 class="font-headline text-2xl font-black text-on-surface">{{ editingId ? 'Edit Hospital' : 'Add Hospital' }}</h3>
+                <button (click)="closeForm()" class="rounded-lg bg-surface px-3 py-2 text-sm font-bold">Close</button>
+              </div>
+              <form (ngSubmit)="save()" class="space-y-4">
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <input [(ngModel)]="form.name" name="name" required placeholder="Facility name" class="rounded-xl bg-surface px-4 py-3" />
+                  <input [(ngModel)]="form.type" name="type" required placeholder="Facility type" class="rounded-xl bg-surface px-4 py-3" />
+                  <input [(ngModel)]="form.waitTime" name="waitTime" placeholder="Wait time" class="rounded-xl bg-surface px-4 py-3" />
+                  <input [(ngModel)]="form.beds" name="beds" type="number" placeholder="Beds" class="rounded-xl bg-surface px-4 py-3" />
+                  <input [(ngModel)]="form.icu" name="icu" type="number" placeholder="ICU occupied" class="rounded-xl bg-surface px-4 py-3" />
+                  <input [(ngModel)]="form.icuTotal" name="icuTotal" type="number" placeholder="ICU total" class="rounded-xl bg-surface px-4 py-3" />
+                </div>
+                <button type="submit" class="w-full rounded-2xl bg-primary px-4 py-4 text-sm font-bold text-white">{{ editingId ? 'Update Hospital' : 'Create Hospital' }}</button>
+              </form>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  
